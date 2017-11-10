@@ -13,6 +13,15 @@ list as-needed.
 
 It uses crypto/rand for rolling die for added randomness.
 
+Sample example words this library may choose:
+
+```text
+squirt catchy anatomy storm
+patchy replica scholar alkalize
+operative shrank lying uncorrupt
+confusion studio abstain subdivide chewy ouch password tropical pentagon
+```
+
 ## Installation
 
 ```sh
