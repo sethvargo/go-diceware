@@ -3,6 +3,8 @@ package diceware
 import "testing"
 
 func TestGenerate(t *testing.T) {
+	t.Parallel()
+
 	for i := 0; i < 10000; i++ {
 		if _, err := Generate(16); err != nil {
 			t.Fatal(err)
@@ -11,6 +13,8 @@ func TestGenerate(t *testing.T) {
 }
 
 func TestRollDie(t *testing.T) {
+	t.Parallel()
+
 	for i := 0; i < 10000; i++ {
 		r, err := RollDie()
 		if err != nil {
@@ -24,6 +28,8 @@ func TestRollDie(t *testing.T) {
 }
 
 func TestRollWord(t *testing.T) {
+	t.Parallel()
+
 	for i := 0; i < 10000; i++ {
 		r, err := RollWord(5)
 		if err != nil {
