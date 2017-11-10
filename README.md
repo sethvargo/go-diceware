@@ -1,5 +1,7 @@
 ## Golang Diceware Generator
 
+[![GoDoc](https://godoc.org/github.com/sethvargo/go-diceware?status.svg)](https://godoc.org/github.com/sethvargo/go-diceware)
+
 This library implements the [Diceware](https://en.wikipedia.org/wiki/Diceware)
 algorithm in pure Golang. The algorithm is most-commonly used when generating
 human-readable passwords.
@@ -37,6 +39,9 @@ func main() {
   log.Printf(strings.Join(list, "-"))
 }
 ```
+
+See the [GoDoc](https://godoc.org/github.com/sethvargo/go-diceware) for more
+information.
 
 ## License
 
