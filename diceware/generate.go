@@ -51,7 +51,7 @@ func WordAt(i int) string {
 	return words[i]
 }
 
-// Roll rolls a single 6-sided die and returns a value between [1,6].
+// RollDie rolls a single 6-sided die and returns a value between [1,6].
 func RollDie() (int, error) {
 	r, err := rand.Int(rand.Reader, big.NewInt(6))
 	if err != nil {
