@@ -1,5 +1,6 @@
 ## Golang Diceware Generator
 
+[![Build Status](https://travis-ci.org/sethvargo/go-diceware.svg?branch=master)](https://travis-ci.org/sethvargo/go-diceware)
 [![GoDoc](https://godoc.org/github.com/sethvargo/go-diceware?status.svg)](https://godoc.org/github.com/sethvargo/go-diceware)
 
 This library implements the [Diceware](https://en.wikipedia.org/wiki/Diceware)
