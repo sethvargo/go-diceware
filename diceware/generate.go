@@ -1,3 +1,15 @@
+// Package diceware provides a library for generating random words via the
+// diceware algorithm by rolling five six-sided dice to randomly select a word
+// from a list of english words.
+//
+// Read more about the diceware algorithm here: https://en.wikipedia.org/wiki/Diceware.
+//
+//    list, err := diceware.Generate(6)
+//    if err != nil  {
+//      log.Fatal(err)
+//    }
+//    log.Printf(strings.Join(list, "-"))
+//
 package diceware
 
 import (

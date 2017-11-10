@@ -1,6 +1,9 @@
 package diceware
 
-import "testing"
+import (
+	"log"
+	"testing"
+)
 
 func TestGenerate(t *testing.T) {
 	t.Parallel()
@@ -40,4 +43,12 @@ func TestRollWord(t *testing.T) {
 			t.Fatalf("expected result to be in range (%d)", r)
 		}
 	}
+}
+
+func ExampleGenerate() {
+	words, err := Generate(6)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%q", words)
 }
