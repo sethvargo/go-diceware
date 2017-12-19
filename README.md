@@ -27,7 +27,7 @@ confusion studio abstain subdivide chewy ouch password tropical pentagon
 ## Installation
 
 ```sh
-$ go -u get github.com/sethvargo/diceware
+$ go get -u github.com/sethvargo/go-diceware
 ```
 
 ## Usage
