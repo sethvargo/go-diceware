@@ -21,6 +21,7 @@ import (
 // Generate generates a list of the given number of words.
 func Generate(words int) ([]string, error) {
 	list := make([]string, 0, words)
+	seen := make(map[string]struct{}, words)
 
 	for i := 0; i < words; i++ {
 		n, err := RollWord(5)
@@ -29,11 +30,13 @@ func Generate(words int) ([]string, error) {
 		}
 
 		word := WordAt(n)
-		if in(list, word) {
+		if _, ok := seen[word]; ok {
 			i--
 			continue
 		}
+
 		list = append(list, word)
+		seen[word] = struct{}{}
 	}
 
 	return list, nil
@@ -46,16 +49,6 @@ func MustGenerate(words int) []string {
 		panic(err)
 	}
 	return res
-}
-
-// in checks if the given string is in the list.
-func in(list []string, val string) bool {
-	for _, v := range list {
-		if v == val {
-			return true
-		}
-	}
-	return false
 }
 
 // WordAt retrieves the word at the given index.

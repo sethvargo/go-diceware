@@ -5,12 +5,31 @@ import (
 	"testing"
 )
 
+const (
+	N = 10000
+)
+
 func TestGenerate(t *testing.T) {
 	t.Parallel()
 
-	for i := 0; i < 10000; i++ {
-		if _, err := Generate(16); err != nil {
+	unique := func(list []string) bool {
+		seen := make(map[string]struct{}, len(list))
+		for _, v := range list {
+			if _, ok := seen[v]; ok {
+				return false
+			}
+			seen[v] = struct{}{}
+		}
+		return true
+	}
+
+	for i := 0; i < N; i++ {
+		list, err := Generate(16)
+		if err != nil {
 			t.Fatal(err)
+		}
+		if !unique(list) {
+			t.Errorf("contains duplicate words: %q", list)
 		}
 	}
 }
@@ -18,7 +37,7 @@ func TestGenerate(t *testing.T) {
 func TestRollDie(t *testing.T) {
 	t.Parallel()
 
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < N; i++ {
 		r, err := RollDie()
 		if err != nil {
 			t.Fatal(err)
@@ -33,7 +52,7 @@ func TestRollDie(t *testing.T) {
 func TestRollWord(t *testing.T) {
 	t.Parallel()
 
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < N; i++ {
 		r, err := RollWord(5)
 		if err != nil {
 			t.Fatal(err)
