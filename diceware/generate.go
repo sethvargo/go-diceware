@@ -18,27 +18,28 @@ import (
 	"math/big"
 )
 
-var (
-	// digits is the number of digits to roll. This is determined by the
-	// dictionary, but only one dictionary is supported today.
-	digits = 5
+// sides is the number of sides on a die
+const sides = 6
 
-	// sides is the number of sides on a die
-	sides = big.NewInt(6)
-)
+// Generate generates a list of the given number of words from EFF's large
+// wordlist.
+func Generate(numWords int) ([]string, error) {
+	return GenerateFromWordlist(numWords, WordlistEFFBig)
+}
 
-// Generate generates a list of the given number of words.
-func Generate(words int) ([]string, error) {
-	list := make([]string, 0, words)
-	seen := make(map[string]struct{}, words)
+// Generate generates a list of the given number of words from the given word
+// list.
+func GenerateFromWordlist(numWords int, wordlist WordListT) ([]string, error) {
+	list := make([]string, 0, numWords)
+	seen := make(map[string]struct{}, numWords)
 
-	for i := 0; i < words; i++ {
-		n, err := RollWord(digits)
+	for i := 0; i < numWords; i++ {
+		n, err := RollWord(wordlist.digits)
 		if err != nil {
 			return nil, err
 		}
 
-		word := WordAt(n)
+		word := WordAtWordlist(n, wordlist)
 		if _, ok := seen[word]; ok {
 			i--
 			continue
@@ -52,22 +53,27 @@ func Generate(words int) ([]string, error) {
 }
 
 // MustGenerate behaves like Generate, but panics on error.
-func MustGenerate(words int) []string {
-	res, err := Generate(words)
+func MustGenerate(numWords int) []string {
+	res, err := Generate(numWords)
 	if err != nil {
 		panic(err)
 	}
 	return res
 }
 
-// WordAt retrieves the word at the given index.
+// WordAt retrieves the word at the given index from EFF's large wordlist.
 func WordAt(i int) string {
-	return words[i]
+	return WordAtWordlist(i, WordlistEFFBig)
+}
+
+// WordAt retrieves the word at the given index from the given wordlist.
+func WordAtWordlist(i int, wordlist WordListT) string {
+	return wordlist.words[i]
 }
 
 // RollDie rolls a single 6-sided die and returns a value between [1,6].
 func RollDie() (int, error) {
-	r, err := rand.Int(rand.Reader, sides)
+	r, err := rand.Int(rand.Reader, big.NewInt(sides))
 	if err != nil {
 		return 0, err
 	}

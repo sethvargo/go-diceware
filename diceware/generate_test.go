@@ -9,19 +9,19 @@ const (
 	N = 10000
 )
 
+func unique(list []string) bool {
+	seen := make(map[string]struct{}, len(list))
+	for _, v := range list {
+		if _, ok := seen[v]; ok {
+			return false
+		}
+		seen[v] = struct{}{}
+	}
+	return true
+}
+
 func TestGenerate(t *testing.T) {
 	t.Parallel()
-
-	unique := func(list []string) bool {
-		seen := make(map[string]struct{}, len(list))
-		for _, v := range list {
-			if _, ok := seen[v]; ok {
-				return false
-			}
-			seen[v] = struct{}{}
-		}
-		return true
-	}
 
 	for i := 0; i < N; i++ {
 		list, err := Generate(16)
@@ -30,6 +30,24 @@ func TestGenerate(t *testing.T) {
 		}
 		if !unique(list) {
 			t.Errorf("contains duplicate words: %q", list)
+		}
+	}
+}
+
+func TestGenerateDifferentWordList(t *testing.T) {
+	t.Parallel()
+
+	wordlists := []WordListT{WordlistEFFBig, WordlistEFFSmall, WordlistOrig}
+
+	for _, wordlist := range wordlists {
+		for i := 0; i < N; i++ {
+			list, err := GenerateFromWordlist(16, wordlist)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !unique(list) {
+				t.Errorf("contains duplicate words: %q", list)
+			}
 		}
 	}
 }
