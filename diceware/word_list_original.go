@@ -1,8 +1,12 @@
 package diceware
 
-// WordlistOrig is the mapping of rolls to words based on original wordlist
+// WordListOriginal is the mapping of rolls to words based on original wordlist
 // available at http://world.std.com/~reinhold/diceware.html
-var WordlistOrig = WordListT{
+func WordListOriginal() WordList {
+	return wordListOriginal
+}
+
+var wordListOriginal = &wordListInternal{
 	digits: 5,
 	words: map[int]string{
 		11111: "a",

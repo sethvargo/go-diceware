@@ -1,12 +1,17 @@
 package diceware
 
-// WordlistEFFSmall is the mapping of rolls to words based on EFF's small wordlist:
+// WordListEffSmall is the mapping of rolls to words based on EFF's small
+// wordlist:
 //
 // https://www.eff.org/files/2016/09/08/eff_short_wordlist_2_0.txt
 //
 // See https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
 // for more details.
-var WordlistEFFSmall = WordListT{
+func WordListEffSmall() WordList {
+	return wordListEffSmall
+}
+
+var wordListEffSmall = &wordListInternal{
 	digits: 4,
 	words: map[int]string{
 		1111: "aardvark",

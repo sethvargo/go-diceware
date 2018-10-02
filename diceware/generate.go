@@ -10,6 +10,7 @@
 //    }
 //    log.Printf(strings.Join(list, "-"))
 //
+// Most functions are safe for concurrent use.
 package diceware
 
 import (
@@ -19,27 +20,62 @@ import (
 )
 
 // sides is the number of sides on a die
-const sides = 6
+var sides = big.NewInt(6)
 
-// Generate generates a list of the given number of words from EFF's large
-// wordlist.
-func Generate(numWords int) ([]string, error) {
-	return GenerateFromWordlist(numWords, WordlistEFFBig)
+// Generator is the stateful generator which can be used to customize the word
+// list and other generation options.
+type Generator struct {
+	wordList WordList
 }
 
-// Generate generates a list of the given number of words from the given word
-// list.
-func GenerateFromWordlist(numWords int, wordlist WordListT) ([]string, error) {
+// GeneratorInput is used as input to the NewGenerator function.
+type GeneratorInput struct {
+	// WordList is the word list to use. There are built-in word lists like
+	// WordListEffBig (default), WordListEffSmall, and WordListOriginal. You can
+	// also bring your own word list by implementing the WordList interface.
+	WordList WordList
+}
+
+// NewGenerator creates a new Generator from the specified configuration. If no
+// input is given, all the default values are used. This function is safe for
+// concurrent use.
+func NewGenerator(i *GeneratorInput) (*Generator, error) {
+	if i == nil {
+		i = new(GeneratorInput)
+	}
+
+	if i.WordList == nil {
+		i.WordList = WordListEffLarge()
+	}
+
+	gen := &Generator{
+		wordList: i.WordList,
+	}
+
+	return gen, nil
+}
+
+// Generate generates a collection of diceware words, specified by the numWords
+// parameter.
+//
+// The algorithm is fast, but it's not designed to be performant, favoring
+// entropy over speed.
+//
+// This function is safe for concurrent use, but there is a possibility of
+// concurrent invocations generating overlapping words. To generate multiple
+// non-overlapping words, use a single invocation of the function and split the
+// resulting string list.
+func (g *Generator) Generate(numWords int) ([]string, error) {
 	list := make([]string, 0, numWords)
 	seen := make(map[string]struct{}, numWords)
 
 	for i := 0; i < numWords; i++ {
-		n, err := RollWord(wordlist.digits)
+		n, err := RollWord(g.wordList.Digits())
 		if err != nil {
 			return nil, err
 		}
 
-		word := WordAtWordlist(n, wordlist)
+		word := g.wordList.WordAt(n)
 		if _, ok := seen[word]; ok {
 			i--
 			continue
@@ -52,28 +88,55 @@ func GenerateFromWordlist(numWords int, wordlist WordListT) ([]string, error) {
 	return list, nil
 }
 
-// MustGenerate behaves like Generate, but panics on error.
-func MustGenerate(numWords int) []string {
-	res, err := Generate(numWords)
+// MustGenerate is the same as Generate, but panics on error.
+func (g *Generator) MustGenerate(numWords int) []string {
+	list, err := g.Generate(numWords)
 	if err != nil {
 		panic(err)
 	}
-	return res
+	return list
+}
+
+// See Generator.Generate for usage.
+func Generate(numWords int) ([]string, error) {
+	gen, err := NewGenerator(nil)
+	if err != nil {
+		return nil, err
+	}
+	return gen.Generate(numWords)
+}
+
+// See Generator.MustGenerate for usage.
+func MustGenerate(numWords int) []string {
+	gen, err := NewGenerator(nil)
+	if err != nil {
+		panic(err)
+	}
+	return gen.MustGenerate(numWords)
+}
+
+// GenerateWithWordList generates a list of the given number of words from the
+// given word list.
+func GenerateWithWordList(numWords int, wordList WordList) ([]string, error) {
+	gen, err := NewGenerator(&GeneratorInput{
+		WordList: wordList,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return gen.Generate(numWords)
 }
 
 // WordAt retrieves the word at the given index from EFF's large wordlist.
+//
+// This function is DEPRECATED. Please use WordList.WordAt instead.
 func WordAt(i int) string {
-	return WordAtWordlist(i, WordlistEFFBig)
-}
-
-// WordAt retrieves the word at the given index from the given wordlist.
-func WordAtWordlist(i int, wordlist WordListT) string {
-	return wordlist.words[i]
+	return WordListEffLarge().WordAt(i)
 }
 
 // RollDie rolls a single 6-sided die and returns a value between [1,6].
 func RollDie() (int, error) {
-	r, err := rand.Int(rand.Reader, big.NewInt(sides))
+	r, err := rand.Int(rand.Reader, sides)
 	if err != nil {
 		return 0, err
 	}

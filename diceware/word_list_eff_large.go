@@ -1,12 +1,17 @@
 package diceware
 
-// WordlistEFFBig is the mapping of rolls to words based on EFF's large wordlist:
+// WordListEffLarge is the mapping of rolls to words based on EFF's large
+// wordlist:
 //
 // https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
 //
 // See https://www.eff.org/deeplinks/2016/07/new-wordlists-random-passphrases
 // for more details.
-var WordlistEFFBig = WordListT{
+func WordListEffLarge() WordList {
+	return wordListEffLarge
+}
+
+var wordListEffLarge = &wordListInternal{
 	digits: 5,
 	words: map[int]string{
 		11111: "abacus",
