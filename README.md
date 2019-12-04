@@ -36,6 +36,7 @@ $ go get -u github.com/sethvargo/go-diceware/diceware
 package main
 
 import (
+  "log"
   "strings"
 
   "github.com/sethvargo/go-diceware/diceware"
