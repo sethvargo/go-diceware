@@ -27,7 +27,7 @@ confusion studio abstain subdivide chewy ouch password tropical pentagon
 ## Installation
 
 ```sh
-$ go get -u github.com/sethvargo/go-diceware/diceware
+$ go get -u github.com/sethvargo/go-diceware/diceware/...
 ```
 
 ## Usage
@@ -54,6 +54,18 @@ func main() {
 
 See the [GoDoc](https://godoc.org/github.com/sethvargo/go-diceware) for more
 information.
+
+## CLI
+
+As a CLI:
+
+```sh
+$ go install github.com/sethvargo/go-diceware/cmd/diceware
+```
+
+```sh
+$ diceware -h
+```
 
 ## License
 
