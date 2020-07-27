@@ -1,7 +1,7 @@
 ## Golang Diceware Generator
 
-[![Build Status](https://travis-ci.org/sethvargo/go-diceware.svg?branch=master)](https://travis-ci.org/sethvargo/go-diceware)
-[![GoDoc](https://godoc.org/github.com/sethvargo/go-diceware?status.svg)](https://godoc.org/github.com/sethvargo/go-diceware)
+[![GoDoc](https://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/sethvargo/go-diceware)
+[![GitHub Actions](https://img.shields.io/github/workflow/status/sethvargo/go-envconfig/Test?style=flat-square)](https://github.com/sethvargo/go-diceware/actions?query=workflow%3ATest)
 
 This library implements the [Diceware](https://en.wikipedia.org/wiki/Diceware)
 algorithm in pure Golang. The algorithm is most-commonly used when generating

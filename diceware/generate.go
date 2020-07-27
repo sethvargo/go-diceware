@@ -97,7 +97,7 @@ func (g *Generator) MustGenerate(numWords int) []string {
 	return list
 }
 
-// See Generator.Generate for usage.
+// Generate - see Generator.Generate for usage.
 func Generate(numWords int) ([]string, error) {
 	gen, err := NewGenerator(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func Generate(numWords int) ([]string, error) {
 	return gen.Generate(numWords)
 }
 
-// See Generator.MustGenerate for usage.
+// MustGenerate - see Generator.MustGenerate for usage.
 func MustGenerate(numWords int) []string {
 	gen, err := NewGenerator(nil)
 	if err != nil {
