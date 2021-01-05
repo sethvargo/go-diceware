@@ -60,7 +60,7 @@ information.
 As a CLI:
 
 ```sh
-$ go install github.com/sethvargo/go-diceware/cmd/diceware
+$ GO111MODULE=off go get github.com/sethvargo/go-diceware/cmd/diceware
 ```
 
 ```sh
