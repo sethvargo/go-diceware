@@ -22,6 +22,8 @@ import (
 // sides is the number of sides on a die
 var sides = big.NewInt(6)
 
+var _ DicewareGenerator = (*Generator)(nil)
+
 // Generator is the stateful generator which can be used to customize the word
 // list and other generation options.
 type Generator struct {

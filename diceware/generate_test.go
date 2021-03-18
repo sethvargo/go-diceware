@@ -1,7 +1,6 @@
 package diceware
 
 import (
-	"log"
 	"testing"
 )
 
@@ -102,52 +101,4 @@ func TestRollWord(t *testing.T) {
 			t.Fatalf("expected result to be in range (%d)", r)
 		}
 	}
-}
-
-func ExampleGenerate() {
-	words, err := Generate(6)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("%q", words)
-}
-
-func ExampleMustGenerate() {
-	words := MustGenerate(6)
-	log.Printf("%q", words)
-}
-
-func ExampleGenerator_Generate() {
-	gen, err := NewGenerator(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	words, err := gen.Generate(6)
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("%q", words)
-}
-
-func ExampleNewGenerator_nil() {
-	// This is the same as calling Generate directly at the package level, but you
-	// can share the generator across functions.
-	gen, err := NewGenerator(nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_ = gen // gen.Generate(...)
-}
-
-func ExampleNewGenerator_custom() {
-	gen, err := NewGenerator(&GeneratorInput{
-		WordList: WordListOriginal(),
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_ = gen // gen.Generate(...)
 }
