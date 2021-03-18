@@ -131,7 +131,7 @@ func GenerateWithWordList(numWords int, wordList WordList) ([]string, error) {
 
 // WordAt retrieves the word at the given index from EFF's large wordlist.
 //
-// This function is DEPRECATED. Please use WordList.WordAt instead.
+// Deprecated: Use WordList.WordAt instead.
 func WordAt(i int) string {
 	return WordListEffLarge().WordAt(i)
 }
