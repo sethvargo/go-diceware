@@ -15,6 +15,7 @@ package diceware
 
 import (
 	"crypto/rand"
+	"io"
 	"math"
 	"math/big"
 )
@@ -27,7 +28,8 @@ var _ DicewareGenerator = (*Generator)(nil)
 // Generator is the stateful generator which can be used to customize the word
 // list and other generation options.
 type Generator struct {
-	wordList WordList
+	wordList   WordList
+	randReader io.Reader
 }
 
 // GeneratorInput is used as input to the NewGenerator function.
@@ -36,6 +38,11 @@ type GeneratorInput struct {
 	// WordListEffBig (default), WordListEffSmall, and WordListOriginal. You can
 	// also bring your own word list by implementing the WordList interface.
 	WordList WordList
+
+	// RandReader is an optional reader to use in place of the default
+	// (crypto/rand.Reader), which can be used to generate repeatable sets of
+	// words
+	RandReader io.Reader
 }
 
 // NewGenerator creates a new Generator from the specified configuration. If no
@@ -51,7 +58,12 @@ func NewGenerator(i *GeneratorInput) (*Generator, error) {
 	}
 
 	gen := &Generator{
-		wordList: i.WordList,
+		wordList:   i.WordList,
+		randReader: i.RandReader,
+	}
+
+	if gen.randReader == nil {
+		gen.randReader = rand.Reader
 	}
 
 	return gen, nil
@@ -72,7 +84,7 @@ func (g *Generator) Generate(numWords int) ([]string, error) {
 	seen := make(map[string]struct{}, numWords)
 
 	for i := 0; i < numWords; i++ {
-		n, err := RollWord(g.wordList.Digits())
+		n, err := g.RollWord(g.wordList.Digits())
 		if err != nil {
 			return nil, err
 		}
@@ -137,8 +149,33 @@ func WordAt(i int) string {
 }
 
 // RollDie rolls a single 6-sided die and returns a value between [1,6].
+//
+// Internally this creates a new Generator with a nil configuration and calls
+// Generator.RollDie.
 func RollDie() (int, error) {
-	r, err := rand.Int(rand.Reader, sides)
+	gen, err := NewGenerator(nil)
+	if err != nil {
+		return 0, err
+	}
+	return gen.RollDie()
+}
+
+// RollWord rolls and aggregates dice to represent one word in the list. The
+// result is the index of the word in the list.
+//
+// Internally this creates a new Generator with a nil configuration and calls
+// Generator.RollWord.
+func RollWord(d int) (int, error) {
+	gen, err := NewGenerator(nil)
+	if err != nil {
+		return 0, err
+	}
+	return gen.RollWord(d)
+}
+
+// RollDie rolls a single 6-sided die and returns a value between [1,6].
+func (g *Generator) RollDie() (int, error) {
+	r, err := rand.Int(g.randReader, sides)
 	if err != nil {
 		return 0, err
 	}
@@ -147,11 +184,11 @@ func RollDie() (int, error) {
 
 // RollWord rolls and aggregates dice to represent one word in the list. The
 // result is the index of the word in the list.
-func RollWord(d int) (int, error) {
+func (g *Generator) RollWord(d int) (int, error) {
 	var final int
 
 	for i := d; i > 0; i-- {
-		res, err := RollDie()
+		res, err := g.RollDie()
 		if err != nil {
 			return 0, err
 		}
