@@ -1,12 +1,11 @@
 package diceware
 
 import (
-	"crypto/sha256"
+	"bytes"
 	"fmt"
 	"reflect"
+	"strings"
 	"testing"
-
-	"golang.org/x/crypto/hkdf"
 )
 
 const (
@@ -46,7 +45,7 @@ func TestGenerator_GenerateWithReader(t *testing.T) {
 	var firstList []string
 
 	for i := 0; i < 3; i++ {
-		gen, err := NewGenerator(&GeneratorInput{RandReader: hkdf.New(sha256.New, []byte("fooopityboopity"), []byte("floppitypoppity"), nil)})
+		gen, err := NewGenerator(&GeneratorInput{RandReader: bytes.NewBuffer([]byte(strings.Repeat("foopityboopityflippityfloppity", 16)))})
 		if err != nil {
 			t.Fatal(err)
 		}

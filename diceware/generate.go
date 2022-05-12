@@ -187,6 +187,7 @@ func (g *Generator) RollWord(d int) (int, error) {
 	return final, nil
 }
 
+// RollDie rolls a single 6-sided die and returns a value between [1,6].
 func (g *Generator) RollDie() (int, error) {
 	r, err := rand.Int(g.randReader, sides)
 	if err != nil {
