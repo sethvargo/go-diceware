@@ -1,7 +1,12 @@
 package diceware
 
 import (
+	"crypto/sha256"
+	"fmt"
+	"reflect"
 	"testing"
+
+	"golang.org/x/crypto/hkdf"
 )
 
 const (
@@ -32,6 +37,28 @@ func TestGenerator_Generate(t *testing.T) {
 			t.Fatal(err)
 		}
 		testUnique(t, list)
+	}
+}
+
+func TestGenerator_GenerateWithReader(t *testing.T) {
+	t.Parallel()
+
+	var firstList []string
+
+	for i := 0; i < 3; i++ {
+		gen, err := NewGenerator(&GeneratorInput{RandReader: hkdf.New(sha256.New, []byte("fooopityboopity"), []byte("floppitypoppity"), nil)})
+		if err != nil {
+			t.Fatal(err)
+		}
+		list, err := gen.Generate(16)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if i == 0 {
+			firstList = list
+		} else if !reflect.DeepEqual(list, firstList) {
+			t.Fatal(fmt.Sprintf("mismatched values from custom rand: %v vs %v", firstList, list))
+		}
 	}
 }
 
