@@ -150,7 +150,8 @@ func WordAt(i int) string {
 
 // RollDie rolls a single 6-sided die and returns a value between [1,6].
 //
-// Deprecated: Use Generator.RollDie instead
+// Internally this creates a new Generator with a nil configuration and calls
+// Generator.RollDie.
 func RollDie() (int, error) {
 	gen, err := NewGenerator(nil)
 	if err != nil {
@@ -161,7 +162,8 @@ func RollDie() (int, error) {
 
 // RollDie rolls a single 6-sided die and returns a value between [1,6].
 //
-// Deprecated: Use Generator.RollWord instead
+// Internally this creates a new Generator with a nil configuration and calls
+// Generator.RollWord.
 func RollWord(d int) (int, error) {
 	gen, err := NewGenerator(nil)
 	if err != nil {
