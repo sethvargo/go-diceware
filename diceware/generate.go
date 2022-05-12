@@ -160,7 +160,8 @@ func RollDie() (int, error) {
 	return gen.RollDie()
 }
 
-// RollDie rolls a single 6-sided die and returns a value between [1,6].
+// RollWord rolls and aggregates dice to represent one word in the list. The
+// result is the index of the word in the list.
 //
 // Internally this creates a new Generator with a nil configuration and calls
 // Generator.RollWord.
@@ -170,6 +171,15 @@ func RollWord(d int) (int, error) {
 		return 0, err
 	}
 	return gen.RollWord(d)
+}
+
+// RollDie rolls a single 6-sided die and returns a value between [1,6].
+func (g *Generator) RollDie() (int, error) {
+	r, err := rand.Int(g.randReader, sides)
+	if err != nil {
+		return 0, err
+	}
+	return int(r.Int64()) + 1, nil
 }
 
 // RollWord rolls and aggregates dice to represent one word in the list. The
@@ -187,13 +197,4 @@ func (g *Generator) RollWord(d int) (int, error) {
 	}
 
 	return final, nil
-}
-
-// RollDie rolls a single 6-sided die and returns a value between [1,6].
-func (g *Generator) RollDie() (int, error) {
-	r, err := rand.Int(g.randReader, sides)
-	if err != nil {
-		return 0, err
-	}
-	return int(r.Int64()) + 1, nil
 }

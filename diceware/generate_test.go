@@ -2,7 +2,6 @@ package diceware
 
 import (
 	"bytes"
-	"fmt"
 	"reflect"
 	"strings"
 	"testing"
@@ -56,7 +55,7 @@ func TestGenerator_GenerateWithReader(t *testing.T) {
 		if i == 0 {
 			firstList = list
 		} else if !reflect.DeepEqual(list, firstList) {
-			t.Fatal(fmt.Sprintf("mismatched values from custom rand: %v vs %v", firstList, list))
+			t.Fatalf("mismatched values from custom rand: %v vs %v", firstList, list)
 		}
 	}
 }
