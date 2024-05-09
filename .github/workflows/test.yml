@@ -3,33 +3,40 @@ name: Test
 on:
   push:
     branches:
-    - main
-    tags:
-    - '*'
+      - main
   pull_request:
     branches:
-    - main
+      - main
+
+concurrency:
+  group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform:
+          - 'macos-latest'
+          - 'ubuntu-latest'
+          - 'windows-latest'
+      fail-fast: false
+
+    runs-on: '${{ matrix.platform }}'
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: 'actions/checkout@v4'
 
-    - uses: actions/setup-go@v2
-      with:
-        go-version: '1.14'
+      - uses: 'actions/setup-go@v5'
+        with:
+          go-version-file: 'go.mod'
 
-    - uses: actions/cache@v2
-      with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
-
-    - name: Lint
-      run: make fmtcheck staticcheck
-
-    - name: Test
-      run: make test-acc
+      - shell: 'bash'
+        run: |-
+          go test \
+            -count=1 \
+            -race \
+            -shuffle=on \
+            -timeout=5m \
+            -vet=all \
+            ./...
