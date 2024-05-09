@@ -1,16 +1,16 @@
-// Package diceware provides a library for generating random words via the
-// diceware algorithm by rolling five six-sided dice to randomly select a word
-// from a list of english words.
-//
-// Read more about the diceware algorithm here: https://en.wikipedia.org/wiki/Diceware.
-//
-//    list, err := diceware.Generate(6)
-//    if err != nil  {
-//      log.Fatal(err)
-//    }
-//    log.Printf(strings.Join(list, "-"))
-//
-// Most functions are safe for concurrent use.
+// Copyright \d{4} .*
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+// [\t\f]+|[ ]{2,}http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 package diceware
 
 import (
@@ -20,7 +20,7 @@ import (
 	"math/big"
 )
 
-// sides is the number of sides on a die
+// sides is the number of sides on a die.
 var sides = big.NewInt(6)
 
 var _ DicewareGenerator = (*Generator)(nil)
