@@ -172,7 +172,7 @@ func RollWord(d int) (int, error) {
 func (g *Generator) RollDie() (int, error) {
 	r, err := rand.Int(g.randReader, sides)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("failed to generate a random number: %w", err)
 	}
 	return int(r.Int64()) + 1, nil
 }
