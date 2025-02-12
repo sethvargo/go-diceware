@@ -1,16 +1,3 @@
-// Copyright \d{4} .*
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// [\t\f]+|[ ]{2,}http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 package diceware
 
 import "sync"
@@ -2034,7 +2021,7 @@ var WordListEffLarge = sync.OnceValue(func() WordList {
 			24252: "drone",
 			24253: "drool",
 			24254: "droop",
-			24255: "dropdown",
+			24255: "drop-down",
 			24256: "dropbox",
 			24261: "dropkick",
 			24262: "droplet",
@@ -2553,7 +2540,7 @@ var WordListEffLarge = sync.OnceValue(func() WordList {
 			26515: "feel",
 			26516: "feisty",
 			26521: "feline",
-			26522: "felttip",
+			26522: "felt-tip",
 			26523: "feminine",
 			26524: "feminism",
 			26525: "feminist",
@@ -6665,7 +6652,7 @@ var WordListEffLarge = sync.OnceValue(func() WordList {
 			61531: "synthetic",
 			61532: "syrup",
 			61533: "system",
-			61534: "tshirt",
+			61534: "t-shirt",
 			61535: "tabasco",
 			61536: "tabby",
 			61541: "tableful",
@@ -7773,7 +7760,7 @@ var WordListEffLarge = sync.OnceValue(func() WordList {
 			66615: "yield",
 			66616: "yin",
 			66621: "yippee",
-			66622: "yoyo",
+			66622: "yo-yo",
 			66623: "yodel",
 			66624: "yoga",
 			66625: "yogurt",

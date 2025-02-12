@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - main
+      - 'main'
   pull_request:
     branches:
-      - main
+      - 'main'
 
 concurrency:
   group: '${{ github.workflow }}-${{ github.head_ref || github.ref }}'
@@ -25,9 +25,9 @@ jobs:
     runs-on: '${{ matrix.platform }}'
 
     steps:
-      - uses: 'actions/checkout@v4'
+      - uses: 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' # ratchet:actions/checkout@v4
 
-      - uses: 'actions/setup-go@v5'
+      - uses: 'actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34' # ratchet:actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
 
