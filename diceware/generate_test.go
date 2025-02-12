@@ -11,11 +11,13 @@ const (
 	N = 10000
 )
 
-func testUnique(t testing.TB, list []string) {
+func testUnique(tb testing.TB, list []string) {
+	tb.Helper()
+
 	seen := make(map[string]struct{}, len(list))
 	for _, v := range list {
 		if _, ok := seen[v]; ok {
-			t.Errorf("found duplicate: %q", list)
+			tb.Errorf("found duplicate: %q", list)
 		}
 		seen[v] = struct{}{}
 	}
@@ -82,8 +84,6 @@ func TestGenerateWordList(t *testing.T) {
 	}
 
 	for _, tc := range cases {
-		tc := tc
-
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
