@@ -2,6 +2,7 @@ package diceware
 
 import (
 	"crypto/rand"
+	"fmt"
 	"io"
 	"math"
 	"math/big"
@@ -67,6 +68,13 @@ func NewGenerator(i *GeneratorInput) (*Generator, error) {
 // non-overlapping words, use a single invocation of the function and split the
 // resulting string list.
 func (g *Generator) Generate(numWords int) ([]string, error) {
+	if typ, ok := g.wordList.(WordListNumWordser); ok {
+		if l := typ.NumWords(); numWords > l {
+			return nil, fmt.Errorf("number of requested words (%d) cannot exceed the size of the wordlist (%d)",
+				numWords, l)
+		}
+	}
+
 	list := make([]string, 0, numWords)
 	seen := make(map[string]struct{}, numWords)
 
