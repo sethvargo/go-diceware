@@ -12,7 +12,15 @@ type WordList interface {
 	WordAt(int) string
 }
 
+// WordListNumWordser is an auxillary interface that returns the number of words
+// in the list. This is a separate interface for backwards compatability.
+type WordListNumWordser interface {
+	// NumWords returns the total number of words in the list.
+	NumWords() int
+}
+
 var _ WordList = (*wordListInternal)(nil)
+var _ WordListNumWordser = (*wordListInternal)(nil)
 
 type wordListInternal struct {
 	digits int
@@ -25,4 +33,8 @@ func (w *wordListInternal) Digits() int {
 
 func (w *wordListInternal) WordAt(i int) string {
 	return w.words[i]
+}
+
+func (w *wordListInternal) NumWords() int {
+	return len(w.words)
 }
