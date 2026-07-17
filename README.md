@@ -48,11 +48,11 @@ func main() {
   if err != nil  {
     log.Fatal(err)
   }
-  log.Printf(strings.Join(list, "-"))
+  log.Print(strings.Join(list, "-"))
 }
 ```
 
-See the [GoDoc](https://godoc.org/github.com/sethvargo/go-diceware) for more
+See the [GoDoc](https://pkg.go.dev/github.com/sethvargo/go-diceware/diceware) for more
 information.
 
 ## CLI

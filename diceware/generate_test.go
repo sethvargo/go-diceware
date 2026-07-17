@@ -2,6 +2,7 @@ package diceware
 
 import (
 	"bytes"
+	"errors"
 	"reflect"
 	"strings"
 	"testing"
@@ -31,7 +32,7 @@ func TestGenerator_Generate(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	for i := 0; i < N; i++ {
+	for range N {
 		list, err := gen.Generate(16)
 		if err != nil {
 			t.Fatal(err)
@@ -40,12 +41,25 @@ func TestGenerator_Generate(t *testing.T) {
 	}
 }
 
+func TestGenerator_GenerateNegative(t *testing.T) {
+	t.Parallel()
+
+	gen, err := NewGenerator(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := gen.Generate(-1); !errors.Is(err, ErrNumWordsNegative) {
+		t.Errorf("expected %q to be %q", err, ErrNumWordsNegative)
+	}
+}
+
 func TestGenerator_GenerateWithReader(t *testing.T) {
 	t.Parallel()
 
 	var firstList []string
 
-	for i := 0; i < 3; i++ {
+	for i := range 3 {
 		gen, err := NewGenerator(&GeneratorInput{RandReader: bytes.NewBufferString(strings.Repeat("foopityboopityflippityfloppity", 16))})
 		if err != nil {
 			t.Fatal(err)
@@ -87,7 +101,7 @@ func TestGenerateWordList(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			for i := 0; i < N; i++ {
+			for range N {
 				list, err := GenerateWithWordList(16, tc.wordList)
 				if err != nil {
 					t.Fatal(err)
@@ -101,7 +115,7 @@ func TestGenerateWordList(t *testing.T) {
 func TestRollDie(t *testing.T) {
 	t.Parallel()
 
-	for i := 0; i < N; i++ {
+	for range N {
 		r, err := RollDie()
 		if err != nil {
 			t.Fatal(err)
@@ -116,7 +130,7 @@ func TestRollDie(t *testing.T) {
 func TestRollWord(t *testing.T) {
 	t.Parallel()
 
-	for i := 0; i < N; i++ {
+	for range N {
 		r, err := RollWord(5)
 		if err != nil {
 			t.Fatal(err)
